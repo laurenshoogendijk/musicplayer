@@ -1,0 +1,75 @@
+div.playerelements
+{
+position:fixed;
+left:50px;
+top:50px;
+}
+
+div.playlist
+{
+position:absolute;
+left:550px;
+top:25px;
+}
+
+custombuttonsdiv
+{
+  display:inline;
+}
+
+ul.custombuttons
+{
+  list-style-type:none;
+  overflow:hidden;
+  display:inline;
+}
+
+li
+{
+  position:relative;
+  display:inline;
+}
+
+a.logout, a.rescanmusic, a.changetoplaylist, a.changetovotesystem, a.editplaylist
+{
+  list-style-type:none;
+  width:40px;
+  height:40px;
+  position:relative;
+  display:block;
+  overflow:hidden;
+  text-indent:-9999px;
+}
+
+a.logout
+{
+  background: url("logout.png") no-repeat;
+}
+
+a.rescanmusic
+{
+  background: url("scanmusic.png") no-repeat;
+  top:-40;
+  left:40;
+}
+
+a.changetoplaylist
+{
+  background: url("playfromplaylist.png") no-repeat;
+  top:-80;
+  left:80;
+}
+
+a.changetovotesystem
+{
+  background: url("playfromvotetable.png") no-repeat;
+  top:-80;
+  left:80;
+}
+
+a.editplaylist
+{
+  background: url("editplaylist.png") no-repeat;
+  top:-120;
+  left:120;
+}
