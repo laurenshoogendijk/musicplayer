@@ -9,17 +9,11 @@ if(!$_SESSION['isserver'] == 1) {
 
 
 
-$con = mysql_connect("localhost", $db_user, $db_pass);
-mysql_select_db($db_name);
-
 
 $query_setserver = 'UPDATE isserver SET servergestart="1"';
-mysql_query($query_setserver) or die(mysql_error());
-
-
+$dbConn->query($query_setserver);
 
 $dir = './music/';
-
 
 if(isset($_SESSION['nextsong'])) {
   $id = 0;
@@ -28,8 +22,8 @@ if(isset($_SESSION['nextsong'])) {
 
   $query_getsong = 'SELECT * FROM ' . $musiclist . ' WHERE ID = "' . $_SESSION['nextsong'] . '"';
 
-  $result = mysql_query($query_getsong) or die(mysql_error());
-  while($row = mysql_fetch_assoc($result)) {
+  $result = $dbConn->query($query_getsong);
+  while($row = $result->fetch_row()) {
     $id = $row['ID'];
     $naam = $row['Naam'];
     $pad = $dir . $row['Pad'];
@@ -97,195 +91,86 @@ function changeplaysource() {
   window.location = "change_playsource.php";
 }
     </script>
-
   </head>
-
-
   <body>
-
     <div class="playerelements">
         <div id="jquery_jplayer_1" class="jp-jplayer"></div>
-
-
         <div id="jp_container_1" class="jp-audio">
-
             <div class="jp-type-single">
-
                 <div class="jp-gui jp-interface">
-
                     <ul class="jp-controls">
-
-
-
-                        <!-- comment out any of the following <li>s to remove these buttons -->
-
-
-
-<li><a href="javascript:;" class="jp-play" tabindex="1">play</a></li>
-
-                        <li><a href="javascript:;" class="jp-pause" tabindex="1">pause</a></li>
-
-
+                      <li><a href="javascript:;" class="jp-play" tabindex="1">play</a></li>
+                      <li><a href="javascript:;" class="jp-pause" tabindex="1">pause</a></li>
 
 <?php
-
-
-if($_SESSION['playfromplaylist'] == 1)
-{
+if($_SESSION['playfromplaylist'] == 1) {
   echo '<li><a href="javascript:;" class="jp-stop" tabindex="1" style="position:relative; top:-14px;">stop</a></li>';
-  echo '<li><a href="javascript:;" class="jp-next" tabindex="1" onclick="playnext()">next</a></li>
-';
+  echo '<li><a href="javascript:;" class="jp-next" tabindex="1" onclick="playnext()">next</a></li>';
 }
 
-else
-{
+else {
   echo '<li><a href="javascript:;" class="jp-stop" tabindex="1">stop</a></li>';
 }
-
 ?>
-
                         <li><a href="javascript:;" class="jp-mute" tabindex="1" title="mute">mute</a></li>
-
                         <li><a href="javascript:;" class="jp-unmute" tabindex="1" title="unmute">unmute</a></li>
-
                         <li><a href="javascript:;" class="jp-volume-max" tabindex="1" title="max volume">max volume</a></li>
-
-
-
                     </ul>
-
-
-
-                    <!-- you can comment out any of the following <div>s too -->
-
-
-
                     <div class="jp-progress">
-
                         <div class="jp-seek-bar">
-
                             <div class="jp-play-bar"></div>
-
                         </div>
-
                     </div>
 
                     <div class="jp-volume-bar">
-
                         <div class="jp-volume-bar-value"></div>
-
                     </div>
-
                     <div class="jp-current-time"></div>
-
                     <div class="jp-duration"></div>
-
                 </div>
-
                 <div class="jp-title">
-
                     <ul>
-
                         <li><?php echo 'Now playing: ' . $naam; ?></li>
-
                     </ul>
-
                 </div>
 
                 <div class="jp-no-solution">
-
                     <span>Update Required</span>
-
                     To play the media you will need to either update your browser to a recent version or update your <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
-
                 </div>
-
             </div>
-
         </div>
 <br />
-
-
-
 <div class="custombuttonsdiv">
 <ul class="custombuttons">
-
 <li><a href="javascript:;" onclick="logout()" class="logout" tabindex="1">deze pc afmelden als server</a></li>
-
 <li><a href="javascript:;" onclick="rescanmusic()" class="rescanmusic" tabindex="1">muziekmap opnieuw scannen</a></li>
-
-
 
 <?php
 
-
-
-if($_SESSION['playfromplaylist'] == 0)
-
-{
-
+if($_SESSION['playfromplaylist'] == 0) {
   echo '<li><a href="javascript:;"  onclick="changeplaysource()" class="changetoplaylist" tabindex="1">afspelen vanaf playlist</a></li>';
-}
-
-
-else
-
-{
+} else {
   echo '<li><a href="javascript:;"  onclick="changeplaysource()" class="changetovotesystem" tabindex="1">play from votesystem</a></li>';
-  echo '<li><a href="javascript:;"  onclick="editplaylist()" class="editplaylist" tabindex="1">editplaylist</a></li>';
-
-  echo '</ul>
-';
+  echo '<li><a href="javascript:;"  onclick="editplaylist()" class="editplaylist" tabindex="1">editplaylist</a></li>'
+  echo '</ul>';
   echo '</div>';
   echo '</div>';
-
   echo '<div class="playlist">';
-
-
   echo '<h2>Muziek in de wachtrij:</h2>';
 
-
-
-
   $query_get_playlist = 'SELECT * FROM ' . $playlist;
+  $result = $dbConn->query($query_get_playlist);
 
-  $result = mysql_query($query_get_playlist) or die(mysql_error());
-
-  while($row = mysql_fetch_assoc($result))
-
-  {
-
+  while($row = mysql_fetch_assoc($result)) {
     $query_getnamebyid = 'SELECT * FROM ' . $musiclist . ' WHERE ID = "' . $row['muzieklijst_ID'] . '"';
-
-    $result_getnamebyid = mysql_query($query_getnamebyid) or die(mysql_error());
-
-    while($row_getnamebyid = mysql_fetch_assoc($result_getnamebyid))
-
-    {
-
+    $result_getnamebyid = $dbConn->query($query_getnamebyid);
+    while($row_getnamebyid = $result_getnamebyid->fetch_row()) {
       echo $row_getnamebyid['Naam'] . '<br />';
-
     }
-
   }
-
   echo '</div>';
-
 }
-
-
-
-mysql_close($con);
-
-
-
-
-
-
-
-
 ?>
-
   </body>
-
 </html>

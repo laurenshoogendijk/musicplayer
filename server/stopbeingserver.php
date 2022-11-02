@@ -4,11 +4,8 @@ session_start();
 
 include 'db_resources.php';
 
-$con = mysql_connect("localhost", $db_user, $db_pass);
-mysql_select_db($db_name);
 $query = 'UPDATE isserver SET servergestart="0"';
-$result = mysql_query($query) or die(mysql_error());
-mysql_close($con);
+$dbConn->query($query);
 session_destroy();
 ?>
 

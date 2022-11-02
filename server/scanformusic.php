@@ -8,26 +8,16 @@ if(!$_SESSION['isserver'] == 1) {
   header("location:../client/client.php");
 }
 
-//start the mysql connection.
-$con = mysql_connect("localhost", $db_user, $db_pass);
-mysql_select_db($db_name);
-
-
 $query_clear = 'TRUNCATE TABLE ' . $musiclist;
-mysql_query($query_clear) or die(mysql_error());
+$dbConn->query($query_clear);
 
 //scan the music directory, and put every file in the musiclist.
 $dir = scandir('./music');
 
-foreach($dir as $file)
-{
-    if($file === '.' || $file === '..')
-    {
+foreach($dir as $file) {
+    if($file === '.' || $file === '..')     {
         continue;
-    }
-
-    else
-    {
+    } else {
         $filename = $file;
 
         $file = preg_replace('/_/', ' ', $file);
@@ -39,10 +29,9 @@ foreach($dir as $file)
         $file = preg_replace('/.fla/', '', $file);
 
         $query_fill = 'INSERT INTO ' . $musiclist . ' SET ID = NULL, Naam = "' . $file . '", Pad = "' . $filename . '"';
-        mysql_query($query_fill) or die(mysql_error());
+        $dbConn->query($query_fill);
     }
 }
 
 header('location:server.php');
-
 ?>
