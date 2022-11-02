@@ -1,17 +1,9 @@
 <?php
 
 session_start();
-
-if($_SESSION['isserver'] == 1)
-{
+if(!$_SESSION['isserver'] == 1)
+  header("location:../client/client.php");
 }
-else
-{
-
-//if not, send visitor to client page.
-header("location:../client/client.php");
-}
-
 ?>
 
 <html>
@@ -19,7 +11,7 @@ header("location:../client/client.php");
   </head>
 
   <body>
-    
+
 
 <?php
 
@@ -84,6 +76,6 @@ echo '</td></tr></table>';
 
 ?>
 
-    
+
   </body>
 </html>

@@ -3,13 +3,11 @@ session_start();
 
 include './server/db_resources.php';
 
-if(isset($_SESSION['nowplaying']))
-{
+if(isset($_SESSION['nowplaying'])) {
   header("location:./client/client.php");
 }
 
-if($_SESSION['isserver'] == 1)
-{
+if($_SESSION['isserver'] == 1) {
   header("location:server.php");
 }
 
@@ -25,33 +23,23 @@ while($row=mysql_fetch_assoc($result))
   $db_does_exist = $row['doesexist'];
 }
 
-if($db_does_exist == 0)
-{
+if($db_does_exist == 0) {
   header('location:./deploy/deploy.php');
-}
-
-else
-{
-
+} else {
   mysql_select_db($db_name);
 
   $query = 'SELECT * FROM isserver';
   $result = mysql_query($query) or die(mysql_error());
 
-  while($row = mysql_fetch_array($result))
-  {
+  while($row = mysql_fetch_array($result))   {
     $isserver = $row['servergestart'];
   }
 
-  if($isserver == 0)
-  {
+  if($isserver == 0) {
     $_SESSION['isserver'] = 1;
     $_SESSION['playfromplaylist'] = 0;
     header("location:./server/server.php");
-  }
-
-  else
-  {
+  } else {
     header("location:./client/client.php");
   }
 }

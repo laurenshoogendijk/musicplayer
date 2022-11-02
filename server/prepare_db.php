@@ -4,14 +4,8 @@ session_start();
 include 'db_resources.php';
 
 //check if visitor is server.
-if($_SESSION['isserver'] == 1)
-{
-}
-else
-{
-
-//if not, send visitor to client page.
-header("location:../client/client.php");
+if(!$_SESSION['isserver'] == 1) {
+  header("location:../client/client.php");
 }
 
 //start the mysql connection.
@@ -29,10 +23,8 @@ $randomsong = rand( 1, $nrofrecords_mostvotes);
 
 $counter = 1;
 
-while($mostvotes = mysql_fetch_assoc($result_mostvotes))
-{
-  if($counter == $randomsong)
-  {
+while($mostvotes = mysql_fetch_assoc($result_mostvotes)) {
+  if($counter == $randomsong) {
     $_SESSION['nextsong'] = $mostvotes['muzieklijst_ID'];
 
     $query_clear_currentsong = 'TRUNCATE TABLE ' . $nowplaying;
@@ -41,7 +33,6 @@ while($mostvotes = mysql_fetch_assoc($result_mostvotes))
     mysql_query($query_clear_currentsong) or die(mysql_error());
     mysql_query($query_currentsong) or die(mysql_error());
   }
-
   $counter ++;
 }
 
@@ -63,13 +54,11 @@ $recordarray[2] = rand(1,$aantalrecords);
 $recordarray[3] = rand(1,$aantalrecords);
 $recordarray[4] = rand(1,$aantalrecords);
 
-while($recordarray[1] == $recordarray[0])
-{
+while($recordarray[1] == $recordarray[0]) {
   $recordarray[1] = rand(1,$aantalrecords);
 }
 
-while(($recordarray[2] == $recordarray[1]) || ($recordarray[2] == $recordarray[0]))
-{
+while(($recordarray[2] == $recordarray[1]) || ($recordarray[2] == $recordarray[0])) {
   $recordarray[2] = rand(1,$aantalrecords);
 }
 

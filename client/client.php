@@ -9,20 +9,16 @@ $con = mysql_connect('localhost', $db_user, $db_pass);
 $db = mysql_select_db($db_name);
 $query = 'SELECT * FROM ' . $nowplaying;
 $result = mysql_query($query) or die(mysql_error());
-while($row = mysql_fetch_assoc($result))
-{
-$now_playing = $row['muzieklijst_ID'];
+
+while($row = mysql_fetch_assoc($result)) {
+  $now_playing = $row['muzieklijst_ID'];
 }
-if(isset($_SESSION['nowplaying']))
-{
-  if($_SESSION['nowplaying'] == $now_playing)
-  {
+if(isset($_SESSION['nowplaying'])) {
+  if($_SESSION['nowplaying'] == $now_playing) {
     $_SESSION['algestemd'] = 1;
     header('location:voted.php');
   }
-}
-else
-{
+} else {
   $_SESSION['nowplaying'] = 'niks';
 }
 ?>
@@ -48,9 +44,8 @@ $db = mysql_select_db($db_name);
 $query = 'SELECT * FROM ' . $votetable;
 $result = mysql_query($query) or die(mysql_error());
 
-while($row = mysql_fetch_assoc($result))
-{
-echo '<input type="radio" name="keuze" value ="' . $row['ID'] . '" > ' . $row['Naam'] . '<p />';
+while($row = mysql_fetch_assoc($result)) {
+  echo '<input type="radio" name="keuze" value ="' . $row['ID'] . '" > ' . $row['Naam'] . '<p />';
 }
 
 ?>
@@ -63,9 +58,8 @@ echo '<input type="radio" name="keuze" value ="' . $row['ID'] . '" > ' . $row['N
 <?php
 $query = 'SELECT * FROM ' . $votetable;
 $result = mysql_query($query) or die(mysql_error());
-while($row = mysql_fetch_assoc($result))
-{
-echo 'Er is ' . $row['votecount'] . ' keer op "' . $row['Naam'] . '" gestemd.<p />';
+while($row = mysql_fetch_assoc($result)) {
+  echo 'Er is ' . $row['votecount'] . ' keer op "' . $row['Naam'] . '" gestemd.<p />';
 }
 
 ?>

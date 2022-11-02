@@ -4,14 +4,8 @@ session_start();
 include 'db_resources.php';
 
 //check if visitor is server.
-if($_SESSION['isserver'] == 1)
-{
-}
-else
-{
-
-//if not, send visitor to client page.
-header("location:../client/client.php");
+if(!$_SESSION['isserver'] == 1) {
+  header("location:../client/client.php");
 }
 
 //start the mysql connection.

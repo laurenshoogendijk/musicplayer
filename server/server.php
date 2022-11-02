@@ -3,31 +3,17 @@ session_start();
 
 include 'db_resources.php';
 
-
-if($_SESSION['isserver'] == 1)
-
-{
-
-}
-
-
-else
-
-{
-
+if(!$_SESSION['isserver'] == 1) {
   header("location:../client/client.php");
-
 }
 
 
 
 $con = mysql_connect("localhost", $db_user, $db_pass);
-
 mysql_select_db($db_name);
 
 
 $query_setserver = 'UPDATE isserver SET servergestart="1"';
-
 mysql_query($query_setserver) or die(mysql_error());
 
 
@@ -35,40 +21,22 @@ mysql_query($query_setserver) or die(mysql_error());
 $dir = './music/';
 
 
-if(isset($_SESSION['nextsong']))
-
-{
-
+if(isset($_SESSION['nextsong'])) {
   $id = 0;
-
   $naam = "";
   $pad = "";
-
-
 
   $query_getsong = 'SELECT * FROM ' . $musiclist . ' WHERE ID = "' . $_SESSION['nextsong'] . '"';
 
   $result = mysql_query($query_getsong) or die(mysql_error());
-  while($row = mysql_fetch_assoc($result))
-  {
+  while($row = mysql_fetch_assoc($result)) {
     $id = $row['ID'];
     $naam = $row['Naam'];
     $pad = $dir . $row['Pad'];
   }
-
-
-}
-
-
-else
-
-{
-
+} else {
   header("location:playnextsong.php");
-
 }
-
-
 ?>
 
 
@@ -88,77 +56,46 @@ input {width:420;}
     <script type="text/javascript">
 
 
-$(document).ready(function()
-
-{
-
+$(document).ready(function() {
     $("#jquery_jplayer_1").jPlayer(
-
-    {
-
-        ready: function(event)
-
-        {
-
+      {
+        ready: function(event) {
             $(this).jPlayer("setMedia", {
-
-mp3: "<?php echo $pad; ?>",
-
-wav: "<?php echo $pad; ?>",
-
-oga: "<?php echo $pad; ?>",
-
-m4a: "<?php echo $pad; ?>",
-
-webma: "<?php echo $pad; ?>",
-
-flv: "<?php echo $pad; ?>"
-
-
+              mp3: "<?php echo $pad; ?>",
+              wav: "<?php echo $pad; ?>",
+              oga: "<?php echo $pad; ?>",
+              m4a: "<?php echo $pad; ?>",
+              webma: "<?php echo $pad; ?>",
+              flv: "<?php echo $pad; ?>"
             }).jPlayer("play");
-
         },
-
-        ended: function()
-        {
-
+        ended: function() {
             window.location = "playnextsong.php";
-
         },
-
         swfPath: "./player/jplayer.swf",
-
         supplied: "mp3, wav, m4a, webma, oga, fla"
     });
-
 });
 
-function playnext()
-{
+function playnext() {
   window.location = "playnextsong.php";
-
 }
 
-function logout()
-{
-window.location = "stopbeingserver.php";
+function logout() {
+  window.location = "stopbeingserver.php";
 }
 
-function rescanmusic()
-{
-window.location = "scanformusic.php";
+function rescanmusic() {
+  window.location = "scanformusic.php";
 }
 
-function editplaylist()
-{
-window.open("editplaylist.php")
+function editplaylist() {
+  window.open("editplaylist.php")
 }
 
-function changeplaysource()
-{
-window.location = "change_playsource.php";
+function changeplaysource() {
+  window.location = "change_playsource.php";
 }
-
     </script>
 
   </head>
@@ -169,7 +106,7 @@ window.location = "change_playsource.php";
     <div class="playerelements">
         <div id="jquery_jplayer_1" class="jp-jplayer"></div>
 
-        
+
         <div id="jp_container_1" class="jp-audio">
 
             <div class="jp-type-single">
@@ -179,16 +116,16 @@ window.location = "change_playsource.php";
                     <ul class="jp-controls">
 
 
-                        
+
                         <!-- comment out any of the following <li>s to remove these buttons -->
 
 
-                        
+
 <li><a href="javascript:;" class="jp-play" tabindex="1">play</a></li>
 
                         <li><a href="javascript:;" class="jp-pause" tabindex="1">pause</a></li>
 
-                        
+
 
 <?php
 
@@ -218,11 +155,11 @@ else
                     </ul>
 
 
-                    
+
                     <!-- you can comment out any of the following <div>s too -->
 
 
-                    
+
                     <div class="jp-progress">
 
                         <div class="jp-seek-bar">
@@ -242,7 +179,7 @@ else
                     <div class="jp-current-time"></div>
 
                     <div class="jp-duration"></div>
-                   
+
                 </div>
 
                 <div class="jp-title">

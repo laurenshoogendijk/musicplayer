@@ -12,13 +12,10 @@ session_start();
 
 <?php
 
-if($_SESSION['algestemd'] == 1)
-{
+if($_SESSION['algestemd'] == 1) {
     echo 'je kunt pas weer stemmen als dit liedje is afgelopen.<p />';
     $_SESSION['algestemd'] == 0;
-}
-else
-{
+} else {
     echo 'Bedankt voor je stem.<br />je kunt weer stemmen als dit liedje is afgelopen.<p />';
 }
 
@@ -30,11 +27,9 @@ $con = mysql_connect('localhost', $db_user, $db_pass);
 $db = mysql_select_db($db_name);
 $query = 'SELECT * FROM ' . $votetable;
 $result = mysql_query($query) or die(mysql_error());
-while($row = mysql_fetch_assoc($result))
-{
-echo 'Er is ' . $row['votecount'] . ' keer op "' . $row['Naam'] . '" gestemd.<p />';
+while($row = mysql_fetch_assoc($result)) {
+  echo 'Er is ' . $row['votecount'] . ' keer op "' . $row['Naam'] . '" gestemd.<p />';
 }
-
 ?>
 
 <form action="client.php">
