@@ -2,23 +2,14 @@
 
 session_start();
 
-if($_SESSION['isserver'] == 1)
-{
-}
-else
-{
-
-//if not, send visitor to client page.
-header("location:../client/client.php");
+if(!$_SESSION['isserver'] == 1) {
+  header("location:../client/client.php");
 }
 
 include '../db_resources.php';
 
-$con = mysql_connect("localhost", $db_user, $db_pass);
-mysql_select_db($db_name);
 $query = 'INSERT INTO playlist SET ID = NULL, muzieklijst_ID ="' . $_POST['muzieklijstID'] . '"';
-mysql_query($query) or die(mysql_error());
+$dbConn->query($query);
 
 header('location:../editplaylist.php');
-
 ?>

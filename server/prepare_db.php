@@ -13,13 +13,13 @@ if(!$_SESSION['isserver'] == 1) {
 $query_mostvotes_random = 'SELECT * FROM ' . $votetable . ' WHERE votecount = ( SELECT MAX( votecount ) FROM votetable)'; //choose if you want a random song from the ones with the most votes.
 $result_mostvotes = $dbConn->query($query_mostvotes_random)
 
-$nrofrecords_mostvotes = $result_mostvotes->num_rows();
+$nrofrecords_mostvotes = $result_mostvotes->num_rows;
 
 $randomsong = rand( 1, $nrofrecords_mostvotes);
 
 $counter = 1;
 
-while($mostvotes = mysql_fetch_assoc($result_mostvotes)) {
+while($mostvotes = $result_mostvotes->fetch_row()) {
   if($counter == $randomsong) {
     $_SESSION['nextsong'] = $mostvotes['muzieklijst_ID'];
 
@@ -39,7 +39,7 @@ $dbConn->query($query_clear);
 //count the number of records in musiclist.
 $query_count = 'SELECT * FROM ' . $musiclist;
 $result = $dbConn->query($query_count);
-$aantalrecords = $result->num_rows();
+$aantalrecords = $result->num_rows;
 
 //put 5 DIFFERENT numbers in an array (1 to number of records).
 $recordarray = array();
@@ -71,9 +71,9 @@ while(($recordarray[4] == $recordarray[3]) || ($recordarray[4] == $recordarray[2
 //pick 5 records from table musiclist and put them into the vote table.
 for($i = 0; $i < 5; $i++) {
   $query_pick = 'SELECT * FROM ' . $musiclist . ' WHERE ID="' . $recordarray[$i] . '"';
-  $result = mysql_query($query_pick) or die(mysql_error());
+  $result = $dbConn->query($query_pick);
 
-    while($row = mysql_fetch_assoc($result)) {
+    while($row = $result->fetch_row()) {
       //create insert query with results from musiclist.
       $query_insert = 'INSERT INTO ' . $votetable . ' SET ID = NULL, muzieklijst_ID = "' . $row['ID'] . '", Naam = "' . $row['Naam'] . '", Pad = "' . $row['Pad'] . '", votecount = "0"';
       $dbConn->query($query_insert);

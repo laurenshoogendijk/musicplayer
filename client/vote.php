@@ -3,13 +3,11 @@ session_start();
 
 include '../server/db_resources.php';
 
-$con = mysql_connect('localhost', $db_user, $db_pass);
-$db = mysql_select_db($db_name);
 $query = 'SELECT * FROM ' . $nowplaying;
-$result = mysql_query($query) or die(mysql_error());
+$result = $dbConn->query($query);
 $now_playing = "niks";
 
-while($row = mysql_fetch_assoc($result)) {
+while($row = $result->fetch_row()) {
   $now_playing = $row['muzieklijst_ID'];
 }
 
@@ -26,9 +24,9 @@ $id_5_votes = 0;
 
 //aantal stemmen per ID ophalen om er 1 bij op te tellen.
 $query = 'SELECT * FROM ' . $votetable;
-$result = mysql_query($query) or die(mysql_error());
+$result = $dbConn->query($query);
 
-while($row = mysql_fetch_assoc($result)) {
+while($row = $result->fetch_row()) {
   switch ($row['ID']) {
     case 1:
       $id_1_votes = $row['votecount'];
@@ -81,15 +79,15 @@ $query_updatevotes_3 = 'UPDATE ' . $votetable . ' SET votecount="' . $id_3_votes
 $query_updatevotes_4 = 'UPDATE ' . $votetable . ' SET votecount="' . $id_4_votes . '" WHERE ID = "4"';
 $query_updatevotes_5 = 'UPDATE ' . $votetable . ' SET votecount="' . $id_5_votes . '" WHERE ID = "5"';
 
-mysql_query($query_updatevotes_1) or die(mysql_error());
-mysql_query($query_updatevotes_2) or die(mysql_error());
-mysql_query($query_updatevotes_3) or die(mysql_error());
-mysql_query($query_updatevotes_4) or die(mysql_error());
-mysql_query($query_updatevotes_5) or die(mysql_error());
+$dbConn->query($query_updatevotes_1);
+$dbConn->query($query_updatevotes_2);
+$dbConn->query($query_updatevotes_3);
+$dbConn->query($query_updatevotes_4);
+$dbConn->query($query_updatevotes_5);
 
 $query_update_session_nowplaying = 'SELECT * FROM ' . $nowplaying;
-$result = mysql_query($query_update_session_nowplaying) or die(mysql_error());
-while($row = mysql_fetch_assoc($result)) {
+$result = $dbConn->query($query_update_session_nowplaying);
+while($row = $result->fetch_row()) {
     $_SESSION['nowplaying'] = $row['muzieklijst_ID'];
 }
 

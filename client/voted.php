@@ -23,11 +23,9 @@ echo '<p />';
 
 include '../server/db_resources.php';
 
-$con = mysql_connect('localhost', $db_user, $db_pass);
-$db = mysql_select_db($db_name);
 $query = 'SELECT * FROM ' . $votetable;
-$result = mysql_query($query) or die(mysql_error());
-while($row = mysql_fetch_assoc($result)) {
+$result = $dbConn->query($query);
+while($row = $result->fetch_row()) {
   echo 'Er is ' . $row['votecount'] . ' keer op "' . $row['Naam'] . '" gestemd.<p />';
 }
 ?>

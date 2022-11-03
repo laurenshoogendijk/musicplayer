@@ -13,8 +13,6 @@ if($_SESSION['isserver'] == 1) {
 
 $isserver = 0;
 
-mysql_connect("localhost", $db_user, $db_pass);
-
 $query_checkifdbexists = 'SELECT IF(EXISTS(SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = "' . $db_name . '"), 1, 0)AS doesexist';
 $result = $dbConn->query($query_checkifdbexists);
 $db_does_exist = $result->fetch_row()['doesexist'];
